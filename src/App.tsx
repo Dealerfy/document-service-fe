@@ -1,4 +1,9 @@
-import { Container, LinearProgress, Typography } from "@mui/material";
+import {
+  Container,
+  CssBaseline,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import {
   DocumentProcessResult,
@@ -28,23 +33,33 @@ function App() {
     }
   };
 
-  return document && imageFile ? (
-    <Analysis document={document} image={imageFile}></Analysis>
-  ) : (
-    <Container maxWidth="sm">
-      <div className="welcome-screen">
-        <Typography variant="h3">Offer Analyzer</Typography>
-        <Typography variant="subtitle1" gutterBottom>
-          An application for automatic extraction of information from Car
-          dealership offers
-        </Typography>
+  return (
+    <div className="app">
+      <CssBaseline></CssBaseline>
+      {document && imageFile ? (
+        <Container>
+          <Analysis document={document} image={imageFile}></Analysis>
+        </Container>
+      ) : (
+        <Container maxWidth="sm">
+          <div className="welcome-screen">
+            <Typography variant="h2">Offer Analyzer</Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              An application for automatic extraction of information from Car
+              dealership offers
+            </Typography>
 
-        <div className="uploader">
-          <FileUpload onChange={handleChange} loading={loading}></FileUpload>
-          {loading ? <LinearProgress /> : null}
-        </div>
-      </div>
-    </Container>
+            <div className="uploader">
+              <FileUpload
+                onChange={handleChange}
+                loading={loading}
+              ></FileUpload>
+              {loading ? <LinearProgress /> : null}
+            </div>
+          </div>
+        </Container>
+      )}
+    </div>
   );
 }
 

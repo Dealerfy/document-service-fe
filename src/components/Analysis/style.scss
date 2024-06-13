@@ -1,10 +1,14 @@
 .analysis {
-  width: 500px;
   display: grid;
   grid-template-areas: "preview analysis";
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr);
+  grid-template-rows: 700px;
+
+  max-height: 700px;
   .preview {
     grid-area: preview;
+
+    max-height: 700px;
     img {
       object-fit: cover;
       width: 100%;
@@ -14,5 +18,55 @@
 
   .analysis-panel {
     grid-area: analysis;
+    min-width: 0;
+    overflow: hidden;
+    max-height: 700px;
+    position: relative;
+
+    .tab-container {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+    }
+
+    .tab-content {
+      margin-top: 48px;
+      max-height: 652px;
+      overflow: auto;
+
+      .tab-padding {
+        padding: 12px 16px;
+      }
+
+      .tab-padding-list {
+        padding-top: 12px;
+        padding-bottom: 0px;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .summary-tab {
+        .summary-highlight {
+          font-weight: bold;
+        }
+      }
+
+      .text-tab {
+        white-space: pre-wrap;
+        .ocr-text {
+          padding: 8px 12px;
+          border-width: 1;
+          border-style: solid;
+          border-color: #bdbdbd;
+          background-color: #f5f5fa;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .analysis-tab {
+      padding: 12px 16px;
+    }
   }
 }

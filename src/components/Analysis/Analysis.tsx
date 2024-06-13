@@ -1,31 +1,10 @@
-import { ReactElement, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import { DocumentProcessResult } from "../../services/documents";
 import "./style.scss";
 import { Paper, Tab, Tabs } from "@mui/material";
-
-function a11yProps(index: number) {
-  return {
-    id: `tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-interface TabPanelProps {
-  activeTab: number;
-  index: number;
-  children?: React.ReactNode;
-}
-const TabPanel = ({ activeTab, index, children }: TabPanelProps) => {
-  return (
-    <div
-      role="tabpanel"
-      hidden={activeTab !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-    >
-      {activeTab === index && children}
-    </div>
-  );
-};
+import { FieldsTab, SummaryTab, TablesTab, TextTab } from "./Analysis.tabs";
+import { a11yProps } from "./Analysis.utils";
 
 interface AnalysisProps {
   document: DocumentProcessResult;
@@ -36,10 +15,16 @@ const Analysis = ({ document, image }: AnalysisProps) => {
   const [activeTab, setActiveTab] = useState(0);
   const imagePreview = useMemo(() => URL.createObjectURL(image), [image]);
 
+  useEffect(() => {
+    return () => URL.revokeObjectURL(imagePreview);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    console.log(newValue);
     setActiveTab(newValue);
   };
-  
+
   return (
     <Paper elevation={2} className="analysis">
       <div className="preview">
@@ -52,22 +37,25 @@ const Analysis = ({ document, image }: AnalysisProps) => {
         />
       </div>
       <div className="analysis-panel">
-        <Tabs value={activeTab} onChange={handleChange}>
-          <Tab label="Summary" {...a11yProps(0)} />
-          <Tab label="Fields" {...a11yProps(1)} />
-          <Tab label="Tables" {...a11yProps(2)} />
-        </Tabs>
-        <TabPanel activeTab={activeTab} index={0}>
-          The image contains an offer for a{" "}
-          {`${document.fields["New/Used"].value} ${document.fields["Color"].value} ${document.fields["Vehicle"].value}`}
-          
-        </TabPanel>
-        <TabPanel activeTab={activeTab} index={1}>
-          Summary
-        </TabPanel>
-        <TabPanel activeTab={activeTab} index={2}>
-          Summary
-        </TabPanel>
+        <div className="tab-container">
+          <Tabs value={activeTab} onChange={handleChange}>
+            <Tab label="Summary" {...a11yProps(0)} />
+            <Tab label="Fields" {...a11yProps(1)} />
+            <Tab label="Tables" {...a11yProps(2)} />
+            <Tab label="Text" {...a11yProps(3)} />
+          </Tabs>
+        </div>
+        <div className="tab-content">
+          {activeTab == 0 ? (
+            <SummaryTab document={document}></SummaryTab>
+          ) : activeTab == 1 ? (
+            <FieldsTab document={document}></FieldsTab>
+          ) : activeTab == 2 ? (
+            <TablesTab document={document}></TablesTab>
+          ) : activeTab == 3 ? (
+            <TextTab document={document}></TextTab>
+          ) : null}
+        </div>
       </div>
     </Paper>
   );
