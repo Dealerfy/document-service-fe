@@ -1,4 +1,5 @@
 import {
+  Button,
   Container,
   CssBaseline,
   LinearProgress,
@@ -33,11 +34,16 @@ function App() {
     }
   };
 
+  const handleNewClick = () => {
+    setDocument(null);
+  };
+
   return (
     <div className="app">
       <CssBaseline></CssBaseline>
       {document && imageFile ? (
         <Container>
+          <Button onClick={handleNewClick}>New Image</Button>
           <Analysis document={document} image={imageFile}></Analysis>
         </Container>
       ) : (

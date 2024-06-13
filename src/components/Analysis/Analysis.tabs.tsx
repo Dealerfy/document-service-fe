@@ -1,6 +1,10 @@
 import { Divider, List, Pagination, Typography } from "@mui/material";
 import { DocumentProcessResult } from "../../services/documents";
-import { DocumentTable, FieldListItem } from "./Analysis.components";
+import {
+  DocumentTable,
+  FieldListItem,
+  SummaryText,
+} from "./Analysis.components";
 import { useState } from "react";
 
 interface AnalysisTabProps {
@@ -12,14 +16,7 @@ export const SummaryTab = ({ document }: AnalysisTabProps) => {
     <>
       <div className="summary-tab tab-padding-list">
         <Typography variant="h5">Summary</Typography>
-        <Typography variant="body1">
-          The image contains an offer for{" "}
-          <span className="summary-highlight">{`${document.fields["New/Used"].value} ${document.fields["Vehicle"].value}`}</span>{" "}
-          in the color{" "}
-          <span className="summary-highlight">
-            {document.fields["Color"].value}
-          </span>
-        </Typography>
+        <SummaryText fields={document.fields}></SummaryText>
       </div>
       <List dense>
         {document.fields["Vehicle"] ? (
@@ -106,7 +103,11 @@ export const FieldsTab = ({ document }: AnalysisTabProps) => {
           All the fields extracted by the OCR
         </Typography>
       </div>
-      <List dense={true}>{fieldListElements}</List>
+      {fieldListElements.length > 0 ? (
+        <List dense={true}>{fieldListElements}</List>
+      ) : (
+        <div className="not-found">No Fields found</div>
+      )}
     </>
   );
 };
@@ -114,10 +115,10 @@ export const FieldsTab = ({ document }: AnalysisTabProps) => {
 export const TablesTab = ({ document }: AnalysisTabProps) => {
   const [currentTable, setCurrentTable] = useState(1);
 
-
   const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setCurrentTable(value);
   };
+
   return (
     <div className="table-tab tab-padding">
       <Typography variant="h5">Tables</Typography>
@@ -131,9 +132,13 @@ export const TablesTab = ({ document }: AnalysisTabProps) => {
           onChange={handleChange}
         />
       ) : null}
-      <DocumentTable
-        documentTable={document.tables[currentTable - 1]}
-      ></DocumentTable>
+      {document.tables.length > 0 ? (
+        <DocumentTable
+          documentTable={document.tables[currentTable - 1]}
+        ></DocumentTable>
+      ) : (
+        <div className="not-found">No tables found</div>
+      )}
     </div>
   );
 };

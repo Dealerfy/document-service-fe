@@ -21,7 +21,6 @@ const Analysis = ({ document, image }: AnalysisProps) => {
   }, []);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    console.log(newValue);
     setActiveTab(newValue);
   };
 

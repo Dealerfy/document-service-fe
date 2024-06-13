@@ -1,5 +1,19 @@
-import { IconButton, ListItem, ListItemText, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
-import { DocumentField, DocumentTableData } from "../../services/documents";
+import {
+  IconButton,
+  ListItem,
+  ListItemText,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import {
+  DocumentField,
+  DocumentFields,
+  DocumentTableData,
+} from "../../services/documents";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 interface DocumentTableProps {
@@ -25,6 +39,30 @@ export const DocumentTable = ({ documentTable }: DocumentTableProps) => {
       <TableHead>{HeaderRows}</TableHead>
       <TableBody>{BodyRows}</TableBody>
     </Table>
+  );
+};
+
+interface SummaryTextProps {
+  fields: DocumentFields;
+}
+
+export const SummaryText = ({ fields }: SummaryTextProps) => {
+  return (
+    <Typography variant="body1">
+      The image contains an offer for{" "}
+      <span className="summary-highlight">{`${
+        fields["New/Used"] ? fields["New/Used"].value : ""
+      } ${
+        fields["Vehicle"] ? fields["Vehicle"].value : "<Vehicle not found>"
+      }`}</span>
+      {fields["Color"] ? (
+        <>
+          {" "}
+          in the color{" "}
+          <span className="summary-highlight">{fields["Color"].value}</span>
+        </>
+      ) : null}
+    </Typography>
   );
 };
 

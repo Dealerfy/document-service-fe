@@ -18,7 +18,7 @@ export interface DocumentField {
   confidence: number;
 }
 
-interface DocumentFields {
+export interface DocumentFields {
   [key: string]: DocumentField;
 }
 
