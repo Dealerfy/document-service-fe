@@ -34,10 +34,7 @@ export const postDocumentProcess = async (
   try {
     const formData = new FormData();
     formData.append("file", file);
-    const { data } = await httpClient.post(
-      `/document/process`,
-      formData
-    );
+    const { data } = await httpClient.post(`/api/document/process`, formData);
     return data;
   } catch (error) {
     console.error(error);
