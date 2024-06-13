@@ -35,7 +35,7 @@ export const postDocumentProcess = async (
     const formData = new FormData();
     formData.append("file", file);
     const { data } = await httpClient.post(
-      `/document/process/example`,
+      `/document/process`,
       formData
     );
     return data;
