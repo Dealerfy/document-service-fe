@@ -1,0 +1,19 @@
+version: "3.5"
+
+services:
+  document-server:
+    container_name: document_service_fe_container
+    env_file:
+      - .env
+    environment:
+      DOCUMENT_AI_PROJECT_ID: ${VITE_API_URL:-http://localhost:8080}
+    build: .
+    ports:
+      - "5000:80"
+    networks:
+      - document_service
+    restart: unless-stopped
+
+networks:
+  document_service:
+    driver: bridge
